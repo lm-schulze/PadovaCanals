@@ -27,7 +27,7 @@ discharge_SMichele = readtable('WaterQualityData.xlsx', 'Sheet','HydraulicData',
 % in the Excel file itself, to 'Global solar radiation
 % Campodarsego/Legnaro' respectively
 arpavHourly = readtable('WaterQualityData.xlsx', 'Sheet','ARPAV_hourly', ...
-    'Range', 'C:I', 'VariableNamesRange', 3)
+    'Range', 'C:I', 'VariableNamesRange', 3);
 
 %% hourly averages for miniDOT data
 % Calculate hourly averages for input/output
@@ -226,3 +226,70 @@ ylabel('Precipitation [mm]');
 title('Precipitation over Time');
 grid on;
 saveas(gcf, 'PrecipitationOverTime.png');
+
+%% compute correlations between parameters
+% remove all of the GroupCount variables from mergedData
+% Remove all GroupCount columns from mergedData
+groupCountColumns = contains(mergedData.Properties.VariableNames, 'GroupCount');
+mergedData = removevars(mergedData, groupCountColumns);
+
+pat = ["oxygen", "date", "hour"]
+varNames = mergedData.Properties.VariableNames(~contains(mergedData.Properties.VariableNames, pat, 'IgnoreCase', true))
+
+
+% Initialize an array to store correlation results
+correlationResults = table();
+
+
+% Loop through each variable in mergedData
+for i = 1:length(varNames)
+    Var = varNames{i};
+
+    Vars = table(mergedData.AvgDissolvedOxygenInput, mergedData.(Var), 'VariableNames', {'A', 'B'});
+    Vars = rmmissing(Vars); % Remove NaN entries from Vars
+    
+    % Remove entries where either AvgDissolvedOxygenInput or Var is NaN
+    %validEntries = mergedData(~isnan(mergedData.AvgDissolvedOxygenInput) & ~isnan(mergedData.(Var)), :);
+    
+    % Compute correlation if there are valid entries
+    if height(Vars) > 0
+        correlationValue = corr(Vars.A, Vars.B);
+        correlationResults = [correlationResults; table({Var}, correlationValue, 'VariableNames', {'Variable', 'Correlation'})];
+    end
+end
+
+% Display the correlation results
+disp('Correlation Results between AvgDissolvedOxygenInput and other variables:');
+disp(correlationResults); 
+
+%% Compute Correlation between AvgDissolvedOxygen and all other Vars
+% Exclude pattern-matching variables
+% excluding the Datetimerelated columns and the DissolvedOxygen itself
+pat = ["oxygen","date","hour"];
+allNames = mergedData.Properties.VariableNames;
+varNames = allNames(~contains(allNames, pat, 'IgnoreCase', true));
+
+% Extract arrays
+IN = mergedData.AvgDissolvedOxygenInput;     
+OUT = mergedData.AvgDissolvedOxygenOutput;          % column vector
+% column vector
+DATA = mergedData{:, varNames};                      % numeric matrix (rows x vars)
+
+% Compute correlations in one call using pairwise row handling
+corrValsInput = corr(IN, DATA, 'Rows', 'pairwise');       % 1 x numVars
+corrValsOutput = corr(OUT, DATA, 'Rows', 'pairwise');       % 1 x numVars
+
+% Build result table (preallocated)
+correlationResultsIn = table(varNames(:), corrValsInput(:), ...
+    'VariableNames', {'Variable', 'Correlation'});
+correlationResultsOut = table(varNames(:), corrValsOutput(:), ...
+    'VariableNames', {'Variable', 'Correlation'});
+
+% Display
+disp('Correlation Results between AvgDissolvedOxygenInput and other variables:');
+disp(correlationResultsIn);
+disp('Correlation Results between AvgDissolvedOxygenOutput and other variables:');
+disp(correlationResultsOut);
+
+
+
