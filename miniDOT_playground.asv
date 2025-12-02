@@ -1,0 +1,125 @@
+clear all
+close all
+
+%% Read all the data
+
+% miniDOT data
+%reading the excel file and second sheet
+input = readtable('WaterQualityData.xlsx', 'Sheet','miniDOT data', 'Range', ...
+    'C6:F122606');
+output = readtable('WaterQualityData.xlsx', 'Sheet','miniDOT data', 'Range', ...
+    'H6:K126925');
+
+%% process miniDOT data
+
+% get daily averages for input/output
+input.Datetime = datetime(input.Datetime); % Ensure Datetime is in correct format
+% Extract the date from the Datetime
+input.Date = dateshift(input.Datetime, 'start', 'day');
+% Calculate daily averages for input
+dailyInputAverages = varfun(@mean, input, 'InputVariables', ...
+    {'DissolvedOxygen', 'WaterTemperature'}, 'GroupingVariables', 'Date');
+% same for output
+output.Datetime = datetime(output.Datetime); 
+output.Date = dateshift(output.Datetime, 'start', 'day');
+dailyOutputAverages = varfun(@mean, output, 'InputVariables', ...
+    {'DissolvedOxygen', 'WaterTemperature'}, 'GroupingVariables', 'Date');
+
+% outer join on Date
+% Outer join the input and output tables on their Date columns
+dailyAverages = outerjoin(dailyInputAverages, dailyOutputAverages, 'Keys', 'Date', 'MergeKeys', true);
+% rename columns for clarity
+dailyAverages.Properties.VariableNames = {'Date', 'GroupCountInput', 'AvgDissolvedOxygenInput', 'AvgWaterTemperatureInput', 'GroupCountOutput', 'AvgDissolvedOxygenOutput',  'AvgWaterTemperatureOutput'};
+% replace NaN in GroupCounts with 0
+dailyAverages.GroupCountInput = fillmissing(dailyAverages.GroupCountInput, 'constant', 0);
+dailyAverages.GroupCountOutput = fillmissing(dailyAverages.GroupCountOutput, 'constant', 0);
+% sum group counts for input and output
+dailyAverages.GroupCount= dailyAverages.GroupCountInput + dailyAverages.GroupCountOutput;
+% calculate oxygen difference between input and output
+dailyAverages.OxygenDiff = dailyAverages.AvgDissolvedOxygenInput - dailyAverages.AvgDissolvedOxygenOutput;
+head(dailyAverages)
+
+%% hourly averages
+% Calculate hourly averages for input/output
+input.Hour = hour(input.Datetime);
+output.Hour = hour(output.Datetime);
+hourlyInputAverages = varfun(@mean, input, 'InputVariables', ...
+    {'DissolvedOxygen', 'WaterTemperature'}, 'GroupingVariables', {'Date', 'Hour'});
+hourlyOutputAverages = varfun(@mean, output, 'InputVariables', ...
+    {'DissolvedOxygen', 'WaterTemperature'}, 'GroupingVariables', {'Date', 'Hour'});
+% outer join again
+hourlyAverages = outerjoin(hourlyInputAverages, hourlyOutputAverages, 'Keys', {'Date', 'Hour'}, 'MergeKeys', true);
+% rename variables for clarity
+hourlyAverages.Properties.VariableNames = {'Date', 'Hour', 'GroupCountInput', 'AvgDissolvedOxygenInput', 'AvgWaterTemperatureInput', 'GroupCountOutput', 'AvgDissolvedOxygenOutput', 'AvgWaterTemperatureOutput'};
+% Replace NaN in hourly group counts with 0
+hourlyAverages.GroupCountInput = fillmissing(hourlyAverages.GroupCountInput, 'constant', 0);
+hourlyAverages.GroupCountOutput = fillmissing(hourlyAverages.GroupCountOutput, 'constant', 0);
+% Sum group counts for hourly averages
+hourlyAverages.GroupCount = hourlyAverages.GroupCountInput + hourlyAverages.GroupCountOutput;
+% Calculate hourly oxygen difference
+hourlyAverages.OxygenDiff = hourlyAverages.AvgDissolvedOxygenOput - hourlyAverages.AvgDissolvedOxygenInput;
+head(hourlyAverages)
+% merge Date and Hour into one column for plotting
+hourlyAverages.DateHour = datetime(hourlyAverages.Date.Year, hourlyAverages.Date.Month, hourlyAverages.Date.Day, hourlyAverages.Hour, 0, 0);
+
+% correlation between DissolvedOxygen and WaterTemperature
+% Calculate correlation coefficients between Dissolved Oxygen and Water Temperature
+% remove NaN first
+corrInput = corrcoef(rmmissing(input.DissolvedOxygen), rmmissing(input.WaterTemperature));
+corrOutput = corrcoef(rmmissing(output.DissolvedOxygen), rmmissing(output.WaterTemperature));
+disp(['Correlation (Input): ', num2str(corrInput(1,2))]);
+disp(['Correlation (Output): ', num2str(corrOutput(1,2))]);
+
+%% miniDOT plots
+% DOT over time
+figure;
+plot(input.Datetime, input.DissolvedOxygen);
+hold on
+plot(output.Datetime, output.DissolvedOxygen);
+hold off
+legend('INPUT', 'OUTPUT')
+xlabel('Datetime');
+ylabel('Dissolved oxygen [mg/L]');
+title('Dissolved Oxygen at input/output over time');
+grid on;
+saveas(gcf, 'DissolvedOxygenOverTime.png');
+
+% Temperature over time
+% Plot Temperature over time
+figure;
+plot(input.Datetime, input.WaterTemperature);
+hold on
+plot(output.Datetime, output.WaterTemperature);
+hold off
+legend('INPUT', 'OUTPUT')
+xlabel('Datetime');
+ylabel('Water Temperature [°C]');
+title('Water Temperature at input/output over time');
+grid on;
+saveas(gcf, 'WaterTemperatureOverTime.png');
+
+% DOT vs Temperature
+figure;
+plot(input.WaterTemperature, input.DissolvedOxygen);
+hold on
+plot(output.WaterTemperature, output.DissolvedOxygen);
+hold off
+legend('INPUT', 'OUTPUT')
+xlabel('Temperature [°C]');
+ylabel('Dissolved oxygen [mg/L]');
+title('Dissolved Oxygen dependence on Temperature');
+grid on;
+saveas(gcf, 'DissolvedOxygenOverTemperature.png');
+
+% Differences of daily/hourly output & input DOT over time
+figure;
+plot(hourlyAverages.DateHour, hourlyAverages.OxygenDiff);
+hold on
+plot(dailyAverages.Date, dailyAverages.OxygenDiff);
+hold off
+xlabel('Datetime');
+ylabel('Dissolved oxygen difference [mg/L]');
+title('Difference of daily/hourly averages of dissolved oxygen between Output and Input');
+legend('Hourly averages', 'Daily averages')
+grid on;
+saveas(gcf, 'HourlyDissolvedOxygenDiffOverTime.png');
