@@ -8,13 +8,26 @@ head(dataHourly)
 %% compute correlations between parameters
 [correlationResultsIn, correlationResultsOut] = avgDissolvedOxygenCorrelations(dataHourly)
 
+%% check if there are gaps in the date-time hourly data
+% make a DateHour column to better check time
+% although it might be super unncecessary, but idk
+dataHourly.DateHour = datetime(dataHourly.Date.Year, dataHourly.Date.Month, ...
+    dataHourly.Date.Day, dataHourly.Hour, 0, 0);
+
+% check if there are gaps in the hourly data
+timeStamps = dataHourly.DateHour; 
+gaps = find(diff(timeStamps) > 1); % hopefully identify gaps greater than 1 hour
+numGaps = numel(gaps);
+display(numGaps);
+% looks good, which means the method for wet/dry weather should be fine?
+
 %% compute wet/dry weather
 n = height(dataHourly);
 
 % Compute 24-hour rolling sum including current hour.
 % For hourly series use movsum with window 24: previous 23 hours + current
 p = dataHourly.sum_Precipitation;
-rolling24 = movsum(p, [23 0], 'Endpoints','shrink');  % returns shorter edges; we'll treat edges as available
+rolling24 = movsum(p, [23 0], 'Endpoints','shrink');  % I think that makes the most sense for endpoint handling here?
 
 % Find times t where rolling24 >= 5 mm
 idx_high = find(rolling24 >= 5);
@@ -43,7 +56,12 @@ end
 
 % Add column to output table (logical)
 dataHourly.IsRainy = isRainy;
-display(sum(isRainy))
+dataHourly.aggPrecipitation = rolling24; % just to check that the aggregation was done correctly
+
+fprintf('Number of rainy hours: %d\n', sum(isRainy))
+
+% write dataHourly to csv file
+writetable(dataHourly, 'WaterQualityDataWithRain.csv');
 
 %% split dataset into dry and wet weather table based on isRainy column
 dataWet = dataHourly(dataHourly.IsRainy, :);
