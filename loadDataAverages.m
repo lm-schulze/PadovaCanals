@@ -103,7 +103,29 @@ if ismember('GroupCountInput', dotTable.Properties.VariableNames) && ismember('G
     dotTable.GroupCount = dotTable.GroupCountInput + dotTable.GroupCountOutput;
 end
 if ismember('AvgDissolvedOxygenInput', dotTable.Properties.VariableNames) && ismember('AvgDissolvedOxygenOutput', dotTable.Properties.VariableNames)
-    dotTable.OxygenDiff = dotTable.AvgDissolvedOxygenInput - dotTable.AvgDissolvedOxygenOutput;
+    % compute difference between In and Output DO levels at each timestep
+    dotTable.OxygenInOutDiff = dotTable.AvgDissolvedOxygenInput - dotTable.AvgDissolvedOxygenOutput;
+    % also compute the DO differences between successive timesteps for both
+    % in and output DO
+    DODiffIn = diff(dotTable.AvgDissolvedOxygenInput);
+    DODiffOut = diff(dotTable.AvgDissolvedOxygenOutput);
+    % check that the corresponding Datetime difference is 1h/1 day exactly, 
+    % set to NaN if not
+    switch mode
+        case 'hourly'
+            dotTable.DateHour = datetime(dotTable.Date.Year, ...
+                dotTable.Date.Month, dotTable.Date.Day, dotTable.Hour, 0, 0);
+            timeDiff = diff(dotTable.DateHour);
+            DODiffIn(timeDiff ~= hours(1)) = NaN;
+            DODiffOut(timeDiff ~= hours(1)) = NaN;
+        case 'daily'
+            timeDiff = diff(dotTable.Date);
+            DODiffIn(timeDiff ~= days(1)) = NaN;
+            DODiffOut(timeDiff ~= days(1)) = NaN;
+    end
+    % append NaN entry to DODiffs & add to table
+    dotTable.DODiffIn = [NaN; DODiffIn];
+    dotTable.DODiffOut = [NaN; DODiffOut];
 end
 
 %% Aggregate hydraulic data
