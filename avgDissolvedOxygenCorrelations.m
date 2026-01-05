@@ -21,8 +21,8 @@ end
 grpMask = contains(dataInput.Properties.VariableNames, 'GroupCount', 'IgnoreCase', true);
 data = removevars(dataInput, find(grpMask));
 
-% Build list of candidate variables (exclude date/hour/oxygen)
-excludePattern = ["oxygen","date","hour"];
+% Build list of candidate variables (exclude date/hour/oxygen/DOdiff)
+excludePattern = ["oxygen","date","hour", "DOdiff"];
 allNames = data.Properties.VariableNames;
 varMask = ~contains(allNames, excludePattern, 'IgnoreCase', true);
 varNames = allNames(varMask);
