@@ -77,20 +77,18 @@ switch mode
 end
 
 %% Aggregate miniDOT (input and output)
-inputVarsDOT = {'DissolvedOxygen','WaterTemperature'};
+inputVarsDOT = {'DissolvedOxygen','WaterTemperature', 'DOPercentSaturation'};
 InputAverages = varfun(@mean, inputDOT, 'InputVariables', inputVarsDOT, 'GroupingVariables', grpVarsDOT);
 OutputAverages = varfun(@mean, outputDOT, 'InputVariables', inputVarsDOT, 'GroupingVariables', grpVarsDOT);
 
 dotTable = outerjoin(InputAverages, OutputAverages, 'Keys', grpVarsDOT, 'MergeKeys', true);
 
 % Standardize names for clarity
-otherNames = {'GroupCountInput','AvgDissolvedOxygenInput','AvgWaterTemperatureInput', ...
-                  'GroupCountOutput','AvgDissolvedOxygenOutput','AvgWaterTemperatureOutput'};
+otherNames = {'GroupCountInput','AvgDissolvedOxygenInput','AvgWaterTemperatureInput','AvgDOPercentSaturationInput','GroupCountOutput','AvgDissolvedOxygenOutput','AvgWaterTemperatureOutput','AvgDOPercentSaturationOutput'};
 newNames = [grpVarsDOT otherNames];
 if numel(dotTable.Properties.VariableNames) == numel(newNames)
     dotTable.Properties.VariableNames = newNames;
 end
-
 
 % Fill missing group counts if present and compute GroupCount and OxygenDiff if available
 if ismember('GroupCountInput', dotTable.Properties.VariableNames)

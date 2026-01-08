@@ -6,7 +6,7 @@ dataHourly = loadDataAverages('WaterQualityData.xlsx', 'hourly');
 head(dataHourly)
 
 %% compute correlations between parameters
-[correlationResultsIn, correlationResultsOut] = avgDissolvedOxygenCorrelations(dataHourly)
+[correlationResultsIn, correlationResultsOut] = avgDissolvedOxygenCorrelations(dataHourly);
 
 %% check if there are gaps in the date-time hourly data
 % make a DateHour column to better check time
@@ -21,7 +21,7 @@ dataHourlyCheck = dataHourly(~isnan(dataHourly.sum_Precipitation), :);
 timeStamps = dataHourlyCheck.DateHour; 
 gaps = find(diff(timeStamps) > 1); % hopefully identify gaps greater than 1 hour
 numGaps = numel(gaps);
-display(numGaps);
+disp(numGaps);
 % 2 gaps, which we need to account for when determining the wet/dry 
 % weather condition :((
 
@@ -36,7 +36,7 @@ rolling24 = movsum(p, [23 0], 'Endpoints','shrink');  % I think that makes the m
 % for each 24h window, check if p(i-23:i) has any NaN entries
 nanCount = movsum(isnan(p), [23 0], 'Endpoints','shrink');  % 
 % window is complete when nanCount == 0
-completeWindow = (nanCount == 0)
+completeWindow = (nanCount == 0);
 
 % Find times t where rolling24 >= 5 mm
 idx_high = find(rolling24 >= 5 & completeWindow);
@@ -90,6 +90,6 @@ writetable(dataHourly, 'WaterQualityDataWithRain.csv');
 dataWet = dataHourly(dataHourly.WeatherRegime == "Wet", :);
 dataDry = dataHourly(dataHourly.WeatherRegime == "Dry", :);
 
-[dryCorrelationResultsIn, dryCorrelationResultsOut] = avgDissolvedOxygenCorrelations(dataDry)
-[wetCorrelationResultsIn, wetCorrelationResultsOut] = avgDissolvedOxygenCorrelations(dataWet)
+[dryCorrelationResultsIn, dryCorrelationResultsOut] = avgDissolvedOxygenCorrelations(dataDry);
+[wetCorrelationResultsIn, wetCorrelationResultsOut] = avgDissolvedOxygenCorrelations(dataWet);
 
