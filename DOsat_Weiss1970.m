@@ -7,6 +7,6 @@ function DOsat = DOsat_Weiss1970(T_C)
     A2 = 249.6339;
     A3 = 143.3483;
     A4 = -21.8492;
-    DOsat_mlL = exp(A1 + A2./T + A3*log(T/100) + A4*(T/100));
+    DOsat_mlL = exp(A1 + A2*(100./T) + A3*log(T/100) + A4*(T/100));
     DOsat = DOsat_mlL * 1.429; % convert ml/L to mg/L
 end
