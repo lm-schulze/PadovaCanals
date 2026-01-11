@@ -3,50 +3,37 @@ close all
 
 %% load the table from WaterQualityDataWithRain.csv
 dataHourly = readtable('WaterQualityDataWithRain.csv');
-% take mean of GlobalSolarRadiationCampodarsego and GlobalSolarRadiationLegnaro
-dataHourly.meanSolarRadiation = mean([dataHourly.mean_GlobalSolarRadiationCampodarsego, ...
-    dataHourly.mean_GlobalSolarRadiationLegnaro], 2);
 
 % to start the fitting for the output
 % let's drop all rows where AvgDissolvedOxygenOutput is NaN
-dataVarsOut = {'DODiffOut', 'AvgDissolvedOxygenOutput', 'AvgWaterTemperatureOutput', 'meanSolarRadiation'};
-dataOut = rmmissing(dataHourly, 'MinNumMissing', 1, 'DataVariables', {'DODiffOut', 'AvgDissolvedOxygenOutput', 'AvgWaterTemperatureOutput', 'meanSolarRadiation'});
-dataIn= rmmissing(dataHourly, 'MinNumMissing', 1, 'DataVariables', {'DODiffIn', 'AvgDissolvedOxygenInput', 'AvgWaterTemperatureInput', 'meanSolarRadiation'});
+dataVarsOut = {'DODiffOut', 'AvgDissolvedOxygenOutput', 'AvgWaterTemperatureOutput'};
+dataOut = rmmissing(dataHourly, 'MinNumMissing', 1, 'DataVariables', {'DODiffOut', 'AvgDissolvedOxygenOutput', 'AvgWaterTemperatureOutput'});
+dataIn= rmmissing(dataHourly, 'MinNumMissing', 1, 'DataVariables', {'DODiffIn', 'AvgDissolvedOxygenInput', 'AvgWaterTemperatureInput'});
 head(dataOut(:, dataVarsOut));
 
-%% let's try to simulate some stuff!
+%% let's try to simulate some stuff! Water temperature only version
 
 % Extract relevant columns for fitting
 deltaDO_obs = dataOut.DODiffOut; 
 DO_t = dataOut.AvgDissolvedOxygenOutput; 
-I = dataOut.meanSolarRadiation; 
 T = dataOut.AvgWaterTemperatureOutput;
 DO_sat_fun = @DOsat_Weiss1970;
 
 % initial guess
 p0 = [
-    0.5      % Pmax: photosynthesis ~0.1–2 mg/L/h
-    200      % k_PhS: W/m^2 or similar (depends on your units!)
-    1.07     % theta_PhS: typical biological Q10 ~1.07–1.10
     0.3      % k_R: respiration ~0.05–1 mg/L/h
-    1.08     % theta_R: slightly stronger than photosynthesis
+    1.08     % theta_R: respiration temperature coefficient
     0.05     % k_aer: reaeration ~0.01–0.3 1/h
 ];
 
 % parameter bounds
 lb = [
-    0       % Pmax ≥ 0
-    1       % k_PhS > 0
-    0.95    % theta_PhS (no crazy inverse temp response)
     0       % k_R ≥ 0
     0.95    % theta_R
     0       % k_aer ≥ 0
 ];
 
 ub = [
-    5       % Pmax (very generous upper bound)
-    2000    % k_PhS
-    1.2     % theta_PhS
     5       % k_R
     1.2     % theta_R
     1       % k_aer (1/h is already very strong)
@@ -54,23 +41,17 @@ ub = [
 
 % set function up with the given data to pass to lsqnonlin
 % to estimate the parameters detailed in p
-objfun = @(p) residuals_oxygen_IT(p, deltaDO_obs, DO_t, T, I, DO_sat_fun);
+objfun = @(p) residuals_oxygen_T(p, deltaDO_obs, DO_t, T, DO_sat_fun);
 % parameter estimation with nonlinear least squares
 [p_hat, resnorm, residuals, exitflag, output] = lsqnonlin(objfun, p0, lb, ub);
 
-params_hat.Pmax       = p_hat(1);
-params_hat.k_PhS      = p_hat(2);
-params_hat.theta_PhS  = p_hat(3);
-params_hat.k_R        = p_hat(4);
-params_hat.theta_R    = p_hat(5);
-params_hat.k_aer      = p_hat(6);
+params_hat.k_R        = p_hat(1);
+params_hat.theta_R    = p_hat(2);
+params_hat.k_aer      = p_hat(3);
 
 % print results
-fprintf('\nEstimated parameters (ΔDO model):\n');
+fprintf('\nEstimated parameters (ΔDO model, T only):\n');
 fprintf('---------------------------------\n');
-fprintf('Pmax        = %.4f mg/L/h\n', params_hat.Pmax);
-fprintf('k_PhS       = %.2f\n', params_hat.k_PhS);
-fprintf('theta_PhS   = %.4f\n', params_hat.theta_PhS);
 fprintf('k_R         = %.4f mg/L/h\n', params_hat.k_R);
 fprintf('theta_R     = %.4f\n', params_hat.theta_R);
 fprintf('k_aer       = %.4f 1/h\n', params_hat.k_aer);
@@ -87,7 +68,7 @@ DO_sim(1) = DO_t(1);
 
 % forward Euler integration
 for t = 1:N-1
-    deltaDO_sim(t) = oxygen_model_IT(p_hat, T(t), I(t), DO_sim(t), DO_sat_fun);
+    deltaDO_sim(t) = oxygen_model_T(p_hat, T(t), DO_sim(t), DO_sat_fun);
     DO_sim(t+1) = DO_sim(t) + deltaDO_sim(t);
 end
 %% some stats

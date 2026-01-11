@@ -9,10 +9,10 @@ params.theta_R = p(5); % respiration temperature coefficient
 params.k_aer = p(6); % reaeration coefficient
 
 % photosynthesis term
-PhS = params.Pmax * params.theta_PhS^T * (I / (I + params.k_PhS)); 
+PhS = params.Pmax .* params.theta_PhS.^(T-20) .* (I ./ (I + params.k_PhS)); 
 
 % respiration term 
-Resp = params.Rmax * params.theta_PhS^T;
+Resp = params.k_R .* params.theta_R.^(T-20);
 
 % reaeration term
 % using the weiss 1970 formula for freshwater
