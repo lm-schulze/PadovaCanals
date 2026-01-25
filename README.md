@@ -3,7 +3,7 @@ Course project for *Nature in Context* on the Water quality in the canals of Pad
 
 The project consists of the following files and folders:
 - **Data files**:
-  -`WaterQualityDataWithRain.csv`: CSV file containing the cleaned data on DO, weather and hydraulic data at hourly averages, as well as label for wet/dry weather conditions.
+  - `WaterQualityDataWithRain.csv`: CSV file containing the cleaned data on DO, weather and hydraulic data at hourly averages, as well as label for wet/dry weather conditions.
 - **Model & Residual functions**:
   - `oxygen_model_I.m`, `oxygen_model_T.m`, `oxygen_model_TI.m`: Matlab functions defining the Dissolved Oxygen evolution ODEs of the 3 different models (using solar irradiance $I$, water temperature $T$, or both)
   - `residuals_oxygen_I.m`, `residuals_oxygen_T.m`, `residuals_oxygen_TI.m`: Matlab functions computing the residuals between the observed DO values and the ones obtained from integrating the ODEs for each of the models.
