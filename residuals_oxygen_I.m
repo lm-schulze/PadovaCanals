@@ -1,17 +1,12 @@
 function r = residuals_oxygen_I(p, t_DO, DO_obs, I_fun, O0)
 %residuales del modelo de oxígeno dependiente de la irradiancia
-%se usan para el ajuste por mínimos cuadrados (lsqnonlin)
-
-%asignar parámetros
-params.A = p(1);
-params.alpha1 = p(2);
-params.B = p(3);
-params.beta1 = p(4);
-params.kLoss = p(5);
 
 %resolver modelo solo entre inicio y fin
 try
-    [~, DO_sim] = ode45(@(t,O) oxygen_model_I(t,O,I_fun,params), t_DO, O0);
+    opts = odeset('RelTol', 1e-4, ...  % Looser tolerance for optimization
+              'AbsTol', 1e-6, ...
+              'NonNegative', 1);
+    [~, DO_sim] = ode45(@(t,O) oxygen_model_I(t, O, I_fun, p), t_DO, O0, opts);
 
  
     % comprobaciones de seguridad

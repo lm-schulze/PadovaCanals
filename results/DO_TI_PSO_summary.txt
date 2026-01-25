@@ -1,0 +1,27 @@
+Dissolved Oxygen Model (TI) - PSO Optimization Results
+=================================================
+
+Run date: 25-Jan-2026 21:54:43
+
+ESTIMATED PARAMETERS:
+  P_PhS     = 2.2427 mg/L/h
+  k_PhS     = 176.87
+  theta_PhS     = 1.0699
+  k_R     = 4.9344 mg/L/h
+  theta_R     = 0.9996 mg/L/h
+  k_aer    = 1.3498
+
+OPTIMIZATION INFO:
+  Method         = particleswarm
+  Time           = 5764.6 sec
+  Swarm size     = 30
+  Max iterations = 30
+  RSS (PSO)      = 2812.7837
+
+MODEL DIAGNOSTICS:
+  RSS            = 28119.948 mg^2/L^2
+  RMSE           = 1.638 mg/L
+  Mean bias      = 0.057 mg/L
+  Correlation    = 0.592
+  AIC            = 10355.8575
+  N observations = 10481 (full), 1049 (optimization)
