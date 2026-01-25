@@ -1,4 +1,4 @@
-function r = residuals_oxygen_T(p, deltaDO_obs, DO_t, T, DO_sat_fun)
+function r = residuals_oxygen_T(p, t_DO, DO_obs, T_fun, DO_sat_fun, DO_0)
 % this is the version without the photosynthesis term
 % get parameters from p
 % bc apparently lsqnonlin wants it like that?
@@ -6,19 +6,25 @@ params.k_R= p(1); % respiration constant
 params.theta_R = p(2); % respiration temperature coefficient
 params.k_aer = p(3); % reaeration coefficient 
 
-% respiration term 
-Resp = params.k_R .* params.theta_R.^(T-20);
-
-% reaeration term
-% using the weiss 1970 formula for freshwater
-% I really hope that's ok
-Reaer = params.k_aer .* (DO_sat_fun(T) - DO_t);
-
-% compute model ΔDO
-deltaDO_model = - Resp + Reaer;
-
-% compute residuals
-r = deltaDO_model - deltaDO_obs;
+try
+    % try integrating the model ODE
+    [~, DO_sim] = ode45(@(t, DO) oxygen_model_T(t, DO, T_fun, DO_sat_fun, p), t_DO, DO_0);
+    % some security measures
+    if any(isnan(DO_sim)) || any(isinf(DO_sim))
+        fprintf('ODE integration produced NaN/Inf values.\n');
+        r = 1e6 * ones(size(DO_obs));
+        return
+    end
+    % residuals
+    r = DO_sim - DO_obs;
+    
+catch
+    %if ode45 fails
+    r = 1e6 * ones(size(DO_obs));
+    fprintf('ODE integration failed.\n');
 end
+end
+
+    
 
     
