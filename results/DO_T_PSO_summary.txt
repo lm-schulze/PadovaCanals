@@ -1,24 +1,24 @@
 Dissolved Oxygen Model (T-only) - PSO Optimization Results
 =================================================
 
-Run date: 25-Jan-2026 21:18:34
+Run date: 26-Jan-2026 01:04:53
 
 ESTIMATED PARAMETERS:
-  k_R        = 6.6605 mg/L/h
+  k_R        = 9.5697 mg/L/h
   theta_R    = 0.99
-  k_aer      = 2.1303
+  k_aer      = 3.0737
 
 OPTIMIZATION INFO:
   Method         = particleswarm
-  Time           = 4313.1 sec
+  Time           = 5111.4 sec
   Swarm size     = 30
-  Max iterations = 30
-  RSS (PSO)      = 31317.5643
+  Max iterations = 50
+  RSS (PSO)      = 31331.2088
 
 MODEL DIAGNOSTICS:
-  RSS            = 31318.869 mg^2/L^2
+  RSS            = 31332.051 mg^2/L^2
   RMSE           = 1.729 mg/L
-  Mean bias      = -0.012 mg/L
+  Mean bias      = 0.000 mg/L
   Correlation    = 0.523
-  AIC            = 11479.0965
+  AIC            = 11483.5071
   N observations = 10481 (full), 1049 (optimization)

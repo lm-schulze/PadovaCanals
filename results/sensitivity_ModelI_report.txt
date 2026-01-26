@@ -1,0 +1,125 @@
+Sensitivity Analysis Report - Model I
+=====================================
+
+Date: 26-Jan-2026 03:40:29
+
+Baseline Parameters:
+  P_PhS = 3.0000
+  k_PhS = 50.0000
+  P_PhR = 0.0500
+  k_PhR = 50.0000
+  k_loss = 0.0500
+
+Perturbation levels tested: ±10% ±20% ±50% ±80% 
+
+SENSITIVITY ANALYSIS RESULTS:
+-----------------------------
+
+Perturbation Level: ±10%
+------------------------
+1. k_loss
+   Mean |S_rel|: 1.0324 (dimensionless)
+   Max |S_rel|:  26.2562 (dimensionless)
+2. P_PhS
+   Mean |S_rel|: 1.0150 (dimensionless)
+   Max |S_rel|:  4.4676 (dimensionless)
+3. k_PhS
+   Mean |S_rel|: 0.3027 (dimensionless)
+   Max |S_rel|:  2.7330 (dimensionless)
+4. k_PhR
+   Mean |S_rel|: 0.2654 (dimensionless)
+   Max |S_rel|:  28.8589 (dimensionless)
+5. P_PhR
+   Mean |S_rel|: 0.2281 (dimensionless)
+   Max |S_rel|:  7.1607 (dimensionless)
+
+Perturbation Level: ±20%
+------------------------
+1. k_loss
+   Mean |S_rel|: 1.0732 (dimensionless)
+   Max |S_rel|:  25.5630 (dimensionless)
+2. P_PhS
+   Mean |S_rel|: 1.0190 (dimensionless)
+   Max |S_rel|:  5.0020 (dimensionless)
+3. k_PhS
+   Mean |S_rel|: 0.2727 (dimensionless)
+   Max |S_rel|:  5.9752 (dimensionless)
+4. P_PhR
+   Mean |S_rel|: 0.1230 (dimensionless)
+   Max |S_rel|:  12.2749 (dimensionless)
+5. k_PhR
+   Mean |S_rel|: 0.1180 (dimensionless)
+   Max |S_rel|:  1.3850 (dimensionless)
+
+Perturbation Level: ±50%
+------------------------
+1. k_loss
+   Mean |S_rel|: 1.3295 (dimensionless)
+   Max |S_rel|:  55.4152 (dimensionless)
+2. P_PhS
+   Mean |S_rel|: 1.0214 (dimensionless)
+   Max |S_rel|:  6.9600 (dimensionless)
+3. k_PhS
+   Mean |S_rel|: 0.2641 (dimensionless)
+   Max |S_rel|:  2.0859 (dimensionless)
+4. P_PhR
+   Mean |S_rel|: 0.0547 (dimensionless)
+   Max |S_rel|:  4.7813 (dimensionless)
+5. k_PhR
+   Mean |S_rel|: 0.0433 (dimensionless)
+   Max |S_rel|:  0.7774 (dimensionless)
+
+Perturbation Level: ±80%
+------------------------
+1. k_loss
+   Mean |S_rel|: 2.9330 (dimensionless)
+   Max |S_rel|:  287.7373 (dimensionless)
+2. P_PhS
+   Mean |S_rel|: 1.0176 (dimensionless)
+   Max |S_rel|:  3.5781 (dimensionless)
+3. k_PhS
+   Mean |S_rel|: 0.2894 (dimensionless)
+   Max |S_rel|:  3.1887 (dimensionless)
+4. P_PhR
+   Mean |S_rel|: 0.0366 (dimensionless)
+   Max |S_rel|:  0.4006 (dimensionless)
+5. k_PhR
+   Mean |S_rel|: 0.0315 (dimensionless)
+   Max |S_rel|:  0.4189 (dimensionless)
+
+OVERALL RANKING (based on ±80% perturbation):
+-------------------------------------------
+1. k_loss
+   Mean |S_rel|: 2.9330 (dimensionless)
+   Max |S_rel|:  287.7373 (dimensionless)
+2. P_PhS
+   Mean |S_rel|: 1.0176 (dimensionless)
+   Max |S_rel|:  3.5781 (dimensionless)
+3. k_PhS
+   Mean |S_rel|: 0.2894 (dimensionless)
+   Max |S_rel|:  3.1887 (dimensionless)
+4. P_PhR
+   Mean |S_rel|: 0.0366 (dimensionless)
+   Max |S_rel|:  0.4006 (dimensionless)
+5. k_PhR
+   Mean |S_rel|: 0.0315 (dimensionless)
+   Max |S_rel|:  0.4189 (dimensionless)
+
+INTERPRETATION:
+---------------
+- Relative sensitivity S_rel = (∂DO/∂p) * (p/DO) is dimensionless
+- It measures the percentage change in DO per percentage change in parameter
+- Higher |S_rel| = parameter has stronger influence on DO predictions
+- Time-varying sensitivity indicates when during the simulation each parameter matters most
+- Focus optimization and uncertainty analysis on most sensitive parameters
+
+RECOMMENDATIONS:
+----------------
+High sensitivity parameters (should be carefully calibrated):
+  - P_PhS
+  - k_loss
+
+Low sensitivity parameters (could potentially be fixed or have wider bounds):
+  - k_PhS
+  - P_PhR
+  - k_PhR

@@ -1,0 +1,142 @@
+Sensitivity Analysis Report - Model TI
+=====================================
+
+Date: 26-Jan-2026 03:47:43
+
+Baseline Parameters:
+  P_PhS = 3.0000
+  k_PhS = 50.0000
+  theta_PhS = 1.0400
+  P_R = 0.5000
+  theta_R = 1.0800
+  k_aer = 0.1000
+
+Perturbation levels tested: ±10% ±20% ±50% ±80% 
+
+SENSITIVITY ANALYSIS RESULTS:
+-----------------------------
+
+Perturbation Level: ±10%
+------------------------
+1. theta_PhS
+   Mean |S_rel|: 2.7982 (dimensionless)
+   Max |S_rel|:  7.9284 (dimensionless)
+2. theta_R
+   Mean |S_rel|: 1.3007 (dimensionless)
+   Max |S_rel|:  5.3865 (dimensionless)
+3. P_PhS
+   Mean |S_rel|: 0.5325 (dimensionless)
+   Max |S_rel|:  2.2957 (dimensionless)
+4. k_aer
+   Mean |S_rel|: 0.3769 (dimensionless)
+   Max |S_rel|:  1.9798 (dimensionless)
+5. P_R
+   Mean |S_rel|: 0.2541 (dimensionless)
+   Max |S_rel|:  1.8137 (dimensionless)
+6. k_PhS
+   Mean |S_rel|: 0.1680 (dimensionless)
+   Max |S_rel|:  1.5124 (dimensionless)
+
+Perturbation Level: ±20%
+------------------------
+1. theta_PhS
+   Mean |S_rel|: 2.7982 (dimensionless)
+   Max |S_rel|:  7.9284 (dimensionless)
+2. theta_R
+   Mean |S_rel|: 1.2519 (dimensionless)
+   Max |S_rel|:  5.5027 (dimensionless)
+3. P_PhS
+   Mean |S_rel|: 0.5427 (dimensionless)
+   Max |S_rel|:  1.5629 (dimensionless)
+4. k_aer
+   Mean |S_rel|: 0.3761 (dimensionless)
+   Max |S_rel|:  1.5953 (dimensionless)
+5. P_R
+   Mean |S_rel|: 0.2249 (dimensionless)
+   Max |S_rel|:  1.2074 (dimensionless)
+6. k_PhS
+   Mean |S_rel|: 0.1308 (dimensionless)
+   Max |S_rel|:  0.9798 (dimensionless)
+
+Perturbation Level: ±50%
+------------------------
+1. theta_PhS
+   Mean |S_rel|: 2.7982 (dimensionless)
+   Max |S_rel|:  7.9284 (dimensionless)
+2. theta_R
+   Mean |S_rel|: 1.2519 (dimensionless)
+   Max |S_rel|:  5.5027 (dimensionless)
+3. P_PhS
+   Mean |S_rel|: 0.5336 (dimensionless)
+   Max |S_rel|:  1.2032 (dimensionless)
+4. k_aer
+   Mean |S_rel|: 0.4799 (dimensionless)
+   Max |S_rel|:  1.5772 (dimensionless)
+5. P_R
+   Mean |S_rel|: 0.2234 (dimensionless)
+   Max |S_rel|:  1.1274 (dimensionless)
+6. k_PhS
+   Mean |S_rel|: 0.1187 (dimensionless)
+   Max |S_rel|:  0.4544 (dimensionless)
+
+Perturbation Level: ±80%
+------------------------
+1. theta_PhS
+   Mean |S_rel|: 2.7982 (dimensionless)
+   Max |S_rel|:  7.9284 (dimensionless)
+2. theta_R
+   Mean |S_rel|: 1.2519 (dimensionless)
+   Max |S_rel|:  5.5027 (dimensionless)
+3. k_aer
+   Mean |S_rel|: 0.9568 (dimensionless)
+   Max |S_rel|:  3.3157 (dimensionless)
+4. P_PhS
+   Mean |S_rel|: 0.5375 (dimensionless)
+   Max |S_rel|:  1.2387 (dimensionless)
+5. P_R
+   Mean |S_rel|: 0.2228 (dimensionless)
+   Max |S_rel|:  1.0925 (dimensionless)
+6. k_PhS
+   Mean |S_rel|: 0.1350 (dimensionless)
+   Max |S_rel|:  0.4316 (dimensionless)
+
+OVERALL RANKING (based on ±80% perturbation):
+-------------------------------------------
+1. theta_PhS
+   Mean |S_rel|: 2.7982 (dimensionless)
+   Max |S_rel|:  7.9284 (dimensionless)
+2. theta_R
+   Mean |S_rel|: 1.2519 (dimensionless)
+   Max |S_rel|:  5.5027 (dimensionless)
+3. k_aer
+   Mean |S_rel|: 0.9568 (dimensionless)
+   Max |S_rel|:  3.3157 (dimensionless)
+4. P_PhS
+   Mean |S_rel|: 0.5375 (dimensionless)
+   Max |S_rel|:  1.2387 (dimensionless)
+5. P_R
+   Mean |S_rel|: 0.2228 (dimensionless)
+   Max |S_rel|:  1.0925 (dimensionless)
+6. k_PhS
+   Mean |S_rel|: 0.1350 (dimensionless)
+   Max |S_rel|:  0.4316 (dimensionless)
+
+INTERPRETATION:
+---------------
+- Relative sensitivity S_rel = (∂DO/∂p) * (p/DO) is dimensionless
+- It measures the percentage change in DO per percentage change in parameter
+- Higher |S_rel| = parameter has stronger influence on DO predictions
+- Time-varying sensitivity indicates when during the simulation each parameter matters most
+- Focus optimization and uncertainty analysis on most sensitive parameters
+
+RECOMMENDATIONS:
+----------------
+High sensitivity parameters (should be carefully calibrated):
+  - theta_PhS
+  - theta_R
+  - k_aer
+
+Low sensitivity parameters (could potentially be fixed or have wider bounds):
+  - P_PhS
+  - k_PhS
+  - P_R

@@ -1,0 +1,91 @@
+Sensitivity Analysis Report - Model T
+=====================================
+
+Date: 26-Jan-2026 03:42:38
+
+Baseline Parameters:
+  P_R = 0.5000
+  theta_R = 1.0800
+  k_aer = 0.1000
+
+Perturbation levels tested: ±10% ±20% ±50% ±80% 
+
+SENSITIVITY ANALYSIS RESULTS:
+-----------------------------
+
+Perturbation Level: ±10%
+------------------------
+1. theta_R
+   Mean |S_rel|: 5.6408 (dimensionless)
+   Max |S_rel|:  250.0023 (dimensionless)
+2. k_aer
+   Mean |S_rel|: 1.2227 (dimensionless)
+   Max |S_rel|:  37.6546 (dimensionless)
+3. P_R
+   Mean |S_rel|: 1.2157 (dimensionless)
+   Max |S_rel|:  38.4395 (dimensionless)
+
+Perturbation Level: ±20%
+------------------------
+1. theta_R
+   Mean |S_rel|: 5.6639 (dimensionless)
+   Max |S_rel|:  257.6292 (dimensionless)
+2. k_aer
+   Mean |S_rel|: 1.2613 (dimensionless)
+   Max |S_rel|:  38.7033 (dimensionless)
+3. P_R
+   Mean |S_rel|: 1.2150 (dimensionless)
+   Max |S_rel|:  38.3943 (dimensionless)
+
+Perturbation Level: ±50%
+------------------------
+1. theta_R
+   Mean |S_rel|: 5.6639 (dimensionless)
+   Max |S_rel|:  257.6292 (dimensionless)
+2. k_aer
+   Mean |S_rel|: 1.6122 (dimensionless)
+   Max |S_rel|:  49.4548 (dimensionless)
+3. P_R
+   Mean |S_rel|: 1.2153 (dimensionless)
+   Max |S_rel|:  38.3595 (dimensionless)
+
+Perturbation Level: ±80%
+------------------------
+1. theta_R
+   Mean |S_rel|: 5.6639 (dimensionless)
+   Max |S_rel|:  257.6292 (dimensionless)
+2. k_aer
+   Mean |S_rel|: 3.3306 (dimensionless)
+   Max |S_rel|:  101.1947 (dimensionless)
+3. P_R
+   Mean |S_rel|: 1.2155 (dimensionless)
+   Max |S_rel|:  38.3839 (dimensionless)
+
+OVERALL RANKING (based on ±80% perturbation):
+-------------------------------------------
+1. theta_R
+   Mean |S_rel|: 5.6639 (dimensionless)
+   Max |S_rel|:  257.6292 (dimensionless)
+2. k_aer
+   Mean |S_rel|: 3.3306 (dimensionless)
+   Max |S_rel|:  101.1947 (dimensionless)
+3. P_R
+   Mean |S_rel|: 1.2155 (dimensionless)
+   Max |S_rel|:  38.3839 (dimensionless)
+
+INTERPRETATION:
+---------------
+- Relative sensitivity S_rel = (∂DO/∂p) * (p/DO) is dimensionless
+- It measures the percentage change in DO per percentage change in parameter
+- Higher |S_rel| = parameter has stronger influence on DO predictions
+- Time-varying sensitivity indicates when during the simulation each parameter matters most
+- Focus optimization and uncertainty analysis on most sensitive parameters
+
+RECOMMENDATIONS:
+----------------
+High sensitivity parameters (should be carefully calibrated):
+  - theta_R
+
+Low sensitivity parameters (could potentially be fixed or have wider bounds):
+  - P_R
+  - k_aer
