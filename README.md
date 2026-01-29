@@ -1,6 +1,16 @@
 # Water Quality in Padova's Canals
 Course project for *Nature in Context* on the Water quality in the canals of Padova. A.Y. 2025/26. Goal: Determine the main factors (human, natural) driving dissolved oxygen variability in the canals of Padova in dry and wet weather. (E.g. light, temperature, rainfall, hydraulic gate operation and water levels, …).
 
+**Authors:**
+- [@igoridelsohn](https://github.com/igoridelsohn)
+- [@kuraszaleksandra](https://github.com/kuraszaleksandra)
+- [@lauramoll2004](https://github.com/lauramoll2004)
+- [@lm-scuhlze](https://github.com/lm-schulze)
+
+## Project Outline:
+Within this Project, we investigate the dissolved oxygen dynamics in Padova's canals using DO-measurement and weather data acquired between December 2022 and February 2024. Three different models of varying complexity were designed and tested, focussing on water temperature- and solar irradiance-dependent mechanisms (Photosynthesis, Re-aeration, Respiration), with one model describing the water-temperature dependence (labelled T-only), one describing the solar irradiance-dependence (I-only), and one describing both (TI). We perform a sensitivity analysis for each, and calibrate the parameters using Particle Swarm Optimization. The calibrated models are evaluated on different metrics (RMSE, NSE), and compared via AIC.
+
+## Files & Folders
 The project consists of the following files and folders:
 - **Data files**:
   - `WaterQualityDataWithRain.csv`: CSV file containing the cleaned data on DO, weather and hydraulic data at hourly averages, as well as label for wet/dry weather conditions.
