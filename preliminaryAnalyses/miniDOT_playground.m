@@ -5,9 +5,9 @@ close all
 
 % miniDOT data
 %reading the excel file and second sheet
-input = readtable('WaterQualityData.xlsx', 'Sheet','miniDOT data', 'Range', ...
+input = readtable('data/WaterQualityData.xlsx', 'Sheet','miniDOT data', 'Range', ...
     'C6:F122606');
-output = readtable('WaterQualityData.xlsx', 'Sheet','miniDOT data', 'Range', ...
+output = readtable('data/WaterQualityData.xlsx', 'Sheet','miniDOT data', 'Range', ...
     'H6:K126925');
 
 %% process miniDOT data
@@ -82,7 +82,7 @@ xlabel('Datetime');
 ylabel('Dissolved oxygen [mg/L]');
 title('Dissolved Oxygen at input/output over time');
 grid on;
-saveas(gcf, 'DissolvedOxygenOverTime.png');
+saveas(gcf, 'figures/DissolvedOxygenOverTime.png');
 
 % Temperature over time
 % Plot Temperature over time
@@ -96,7 +96,7 @@ xlabel('Datetime');
 ylabel('Water Temperature [°C]');
 title('Water Temperature at input/output over time');
 grid on;
-saveas(gcf, 'WaterTemperatureOverTime.png');
+saveas(gcf, 'figures/WaterTemperatureOverTime.png');
 
 % DOT vs Temperature
 figure;
@@ -109,7 +109,7 @@ xlabel('Temperature [°C]');
 ylabel('Dissolved oxygen [mg/L]');
 title('Dissolved Oxygen dependence on Temperature');
 grid on;
-saveas(gcf, 'DissolvedOxygenOverTemperature.png');
+saveas(gcf, 'figures/DissolvedOxygenOverTemperature.png');
 
 % Differences of daily/hourly output & input DOT over time
 figure;
@@ -122,4 +122,4 @@ ylabel('Dissolved oxygen difference [mg/L]');
 title('Difference of daily/hourly averages of dissolved oxygen between input and Output');
 legend('Hourly averages', 'Daily averages')
 grid on;
-saveas(gcf, 'HourlyDissolvedOxygenDiffOverTime.png');
+saveas(gcf, 'figures/HourlyDissolvedOxygenDiffOverTime.png');

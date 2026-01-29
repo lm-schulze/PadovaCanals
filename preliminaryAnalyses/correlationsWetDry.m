@@ -2,7 +2,7 @@ clear all
 close all
 
 %% Read all the data
-dataHourly = loadDataAverages('WaterQualityData.xlsx', 'hourly');
+dataHourly = loadDataAverages('data/WaterQualityData.xlsx', 'hourly');
 head(dataHourly)
 
 %% compute correlations between parameters
@@ -84,7 +84,7 @@ dataHourly.aggPrecipitation = rolling24; % just to check that the aggregation wa
 fprintf('Number of rainy hours: %d\n', sum(isRainy))
 
 % write dataHourly to csv file
-writetable(dataHourly, 'WaterQualityDataWithRain.csv');
+writetable(dataHourly, 'data/WaterQualityDataWithRain.csv');
 
 %% split dataset into dry and wet weather table based on isRainy column
 dataWet = dataHourly(dataHourly.WeatherRegime == "Wet", :);

@@ -5,28 +5,28 @@ close all
 
 % miniDOT data
 %reading the excel file and second sheet
-inputDOT = readtable('WaterQualityData.xlsx', 'Sheet','miniDOT data', 'Range', ...
+inputDOT = readtable('data/WaterQualityData.xlsx', 'Sheet','miniDOT data', 'Range', ...
     'C6:F122606', 'VariableNamesRange', 6);
-outputDOT = readtable('WaterQualityData.xlsx', 'Sheet','miniDOT data', 'Range', ...
+outputDOT = readtable('data/WaterQualityData.xlsx', 'Sheet','miniDOT data', 'Range', ...
     'H6:K126925', 'VariableNamesRange', 6);
 
 % hydraulic data
-hydraulic_input = readtable('WaterQualityData.xlsx', 'Sheet','HydraulicData', ...
+hydraulic_input = readtable('data/WaterQualityData.xlsx', 'Sheet','HydraulicData', ...
     'Range', 'C5:D124792');
-hydraulic_output = readtable('WaterQualityData.xlsx', 'Sheet','HydraulicData', ...
+hydraulic_output = readtable('data/WaterQualityData.xlsx', 'Sheet','HydraulicData', ...
     'Range', 'G5:H129345');
-discharge_upstream = readtable('WaterQualityData.xlsx', 'Sheet','HydraulicData', ...
+discharge_upstream = readtable('data/WaterQualityData.xlsx', 'Sheet','HydraulicData', ...
     'Range', 'K9:M15');
-discharge_downstream = readtable('WaterQualityData.xlsx', 'Sheet','HydraulicData', ...
+discharge_downstream = readtable('data/WaterQualityData.xlsx', 'Sheet','HydraulicData', ...
     'Range', 'K23:M32');
-discharge_SMichele = readtable('WaterQualityData.xlsx', 'Sheet','HydraulicData', ...
+discharge_SMichele = readtable('data/WaterQualityData.xlsx', 'Sheet','HydraulicData', ...
     'Range', 'O9:Q13');
 
 % ARPAV hourly data
 % for this one I changed the column labels for the global solar radiation
 % in the Excel file itself, to 'Global solar radiation
 % Campodarsego/Legnaro' respectively
-arpavHourly = readtable('WaterQualityData.xlsx', 'Sheet','ARPAV_hourly', ...
+arpavHourly = readtable('data/WaterQualityData.xlsx', 'Sheet','ARPAV_hourly', ...
     'Range', 'C:I', 'VariableNamesRange', 3);
 
 %% hourly averages for miniDOT data
@@ -95,7 +95,7 @@ xlabel('Datetime');
 ylabel('Dissolved oxygen [mg/L]');
 title('Dissolved Oxygen at input/output over time');
 grid on;
-saveas(gcf, 'DissolvedOxygenOverTime.png');
+saveas(gcf, 'figures/DissolvedOxygenOverTime.png');
 
 % Temperature over time
 % Plot Temperature over time
@@ -109,7 +109,7 @@ xlabel('Datetime');
 ylabel('Water Temperature [°C]');
 title('Water Temperature at input/output over time');
 grid on;
-saveas(gcf, 'WaterTemperatureOverTime.png');
+saveas(gcf, 'figures/WaterTemperatureOverTime.png');
 
 % Differences of daily/hourly output & input DOT over time
 % merge Date and Hour into one column for plotting
@@ -121,7 +121,7 @@ xlabel('Datetime');
 ylabel('Dissolved oxygen difference [mg/L]');
 title('Difference of hourly averages of dissolved oxygen between Input and Output');
 grid on;
-saveas(gcf, 'HourlyDissolvedOxygenDiffOverTime.png');
+saveas(gcf, 'figures/HourlyDissolvedOxygenDiffOverTime.png');
 
 % DOT vs Temperature
 figure;
@@ -134,7 +134,7 @@ xlabel('Temperature [°C]');
 ylabel('Dissolved oxygen [mg/L]');
 title('Dissolved Oxygen dependence on Temperature');
 grid on;
-saveas(gcf, 'DissolvedOxygenOverTemperature.png');
+saveas(gcf, 'figures/DissolvedOxygenOverTemperature.png');
 
 %% hydraulic data plots
 
@@ -149,7 +149,7 @@ xlabel('Datetime');
 ylabel('Water Surface Elevation [m.a.m.s.l.]');
 title('Water Surface Elevation at input/output over time');
 grid on;
-saveas(gcf, 'WaterSurfaceElevationOverTime.png');
+saveas(gcf, 'figures/WaterSurfaceElevationOverTime.png');
 
 % DOT vs Water surface elevation
 % this is super useless
@@ -163,7 +163,7 @@ xlabel('Water Surface Elevation [m.a.m.s.l.]');
 ylabel('Dissolved oxygen [mg/L]');
 title('Dissolved Oxygen dependence on Water Surface Elevation at Input');
 grid on;
-saveas(gcf, 'DissolvedOxygenOverWaterSurfaceElevationInput.png');
+saveas(gcf, 'figures/DissolvedOxygenOverWaterSurfaceElevationInput.png');
 
 % DOT vs Water surface elevation
 % this is super useless
@@ -173,7 +173,7 @@ xlabel('Water Surface Elevation [m.a.m.s.l.]');
 ylabel('Dissolved oxygen [mg/L]');
 title('Dissolved Oxygen dependence on Water Surface Elevation at Output');
 grid on;
-saveas(gcf, 'DissolvedOxygenOverWaterSurfaceElevationOutput.png');
+saveas(gcf, 'figures/DissolvedOxygenOverWaterSurfaceElevationOutput.png');
 
 %% ARPAV plots
 mergedData.DateHour = datetime(mergedData.Date.Year, mergedData.Date.Month, mergedData.Date.Day, mergedData.Hour, 0, 0);
@@ -190,7 +190,7 @@ ylabel('Temperature [°C]');
 legend('Air temperature', 'Water Temperature IN', 'Water Temperature OUT')
 title('Air and Water Temperature (hourly averages) over Time');
 grid on;
-saveas(gcf, 'AirWaterTemperatureOverTime.png');
+saveas(gcf, 'figures/AirWaterTemperatureOverTime.png');
 
 % plot minimum and maximum relative Air humidity over time
 figure;
@@ -203,7 +203,7 @@ ylabel('relative Air humidity [%]');
 legend('Min', 'Max')
 title('Hourly minimum and maximum relative air humidity over time');
 grid on;
-saveas(gcf, 'RelAirHumidityOverTime.png');
+saveas(gcf, 'figures/RelAirHumidityOverTime.png');
 
 % Plot global solar radiation in Campodarsego and Legnaro over time
 figure;
@@ -216,7 +216,7 @@ ylabel('Global Solar Radiation [W/m^2]');
 legend('Campodarsego', 'Legnaro');
 title('Global Solar Radiation over Time');
 grid on;
-saveas(gcf, 'GlobalSolarRadiationOverTime.png');
+saveas(gcf, 'figures/GlobalSolarRadiationOverTime.png');
 
 % plot precipitation over time
 figure;
@@ -225,7 +225,7 @@ xlabel('Datetime');
 ylabel('Precipitation [mm]');
 title('Precipitation over Time');
 grid on;
-saveas(gcf, 'PrecipitationOverTime.png');
+saveas(gcf, 'figures/PrecipitationOverTime.png');
 
 %% compute correlations between parameters
 % remove all of the GroupCount variables from mergedData

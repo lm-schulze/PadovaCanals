@@ -2,7 +2,7 @@ clear all
 close all
 
 %% load the table from WaterQualityDataWithRain.csv
-dataHourly = readtable('WaterQualityDataWithRain.csv');
+dataHourly = readtable('data/WaterQualityDataWithRain.csv');
 DO_t = dataHourly.AvgDissolvedOxygenInput;
 DO_pct_sat = dataHourly.AvgDOPercentSaturationInput;
 T = dataHourly.AvgWaterTemperatureInput;
