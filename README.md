@@ -5,7 +5,7 @@ Course project for *Nature in Context* on the Water quality in the canals of Pad
 - [@igoridelsohn](https://github.com/igoridelsohn)
 - [@kuraszaleksandra](https://github.com/kuraszaleksandra)
 - [@lauramoll2004](https://github.com/lauramoll2004)
-- [@lm-scuhlze](https://github.com/lm-schulze)
+- [@lm-schulze](https://github.com/lm-schulze)
 
 ## Project Outline:
 Within this Project, we investigate the dissolved oxygen dynamics in Padova's canals using DO-measurement and weather data acquired between December 2022 and February 2024. Three different models of varying complexity were designed and tested, focussing on water temperature- and solar irradiance-dependent mechanisms (Photosynthesis, Re-aeration, Respiration), with one model describing the water-temperature dependence (labelled T-only), one describing the solar irradiance-dependence (I-only), and one describing both (TI). We perform a sensitivity analysis for each, and calibrate the parameters using Particle Swarm Optimization. The calibrated models are evaluated on different metrics (RMSE, NSE), and compared via AIC.
@@ -19,6 +19,6 @@ The project consists of the following files and folders:
   - `residuals_oxygen_I.m`, `residuals_oxygen_T.m`, `residuals_oxygen_TI.m`: Matlab functions computing the residuals between the observed DO values and the ones obtained from integrating the ODEs for each of the models.
 - **Optimization scripts**:
   - `DO_I_PSO.m`, `DO_T_PSO.m`, `DO_TI_PSO.m` : Matlab scripts fitting the model parameters for each of the models using Particle Swarm Optimization (PSO).
-- **/figures/**: folder containing all plots.
-- **/results/**: folder containing optimization results (parameter estimates, residuals, basic analytics).
-- **/preliminaryAnalysis/**: folder containing all files and scripts used for data cleaning & the preliminary explorations of the data and correlations.
+- **figures/**: folder containing all plots.
+- **results/**: folder containing optimization results (parameter estimates, residuals, basic analytics).
+- **preliminaryAnalysis/**: folder containing all files and scripts used for data cleaning & the preliminary explorations of the data and correlations.
