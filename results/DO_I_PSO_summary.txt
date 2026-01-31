@@ -1,26 +1,37 @@
 Dissolved Oxygen Model (I-only) - PSO Optimization Results
 =================================================
 
-Run date: 26-Jan-2026 00:58:22
+Run date: 30-Jan-2026 01:33:29
 
 ESTIMATED PARAMETERS:
-  P_PhS     = 18.0101 mg/L/h
-  k_PhS     = 425.85
-  P_PhR     = 21.7805
-  k_PhR     = 673.7592 mg/L/h
-  k_loss    = 0.0324
+  P_PhS     = 0.7977 mg/L/h
+  k_PhS     = 63.78
+  P_PhR     = 1.0000
+  k_PhR     = 299.1512 mg/L/h
+  k_loss    = 0.0100
 
 OPTIMIZATION INFO:
   Method         = particleswarm
-  Time           = 4844.9 sec
-  Swarm size     = 30
-  Max iterations = 50
-  RSS (PSO)      = 6167.1378
+  Time           = 12566.7 sec
+  Swarm size     = 100
+  Max iterations = 100
+  RSS (PSO)      = 14739.7905
+
+ INVESTIGATED PARAMETER RANGE:
+  Lower bounds   = 1.000000e-02
+  Lower bounds   = 
+
+  Lower bounds   = 1.000000e-03
+  Lower bounds   = 
+
+  Lower bounds   = 1.000000e-02
+  Upper bounds   = ǴǴ
 
 MODEL DIAGNOSTICS:
-  RSS            = 88206.475 mg^2/L^2
-  RMSE           = 2.901 mg/L
-  Mean bias      = -0.591 mg/L
-  Correlation    = 0.003
-  AIC            = 22335.7487
-  N observations = 10481 (full), 1049 (optimization)
+  RSS            = 71963.003 mg^2/L^2
+  RMSE           = 2.620 mg/L
+  Mean bias      = -0.856 mg/L
+  Correlation    = -0.133
+  NSE            = -0.668 mg/L
+  AIC            = 20202.5693
+  N observations = 10481 (full), 3494 (optimization)

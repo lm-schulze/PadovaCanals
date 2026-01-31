@@ -1,27 +1,41 @@
 Dissolved Oxygen Model (TI) - PSO Optimization Results
 =================================================
 
-Run date: 25-Jan-2026 21:54:43
+Run date: 31-Jan-2026 00:22:26
 
 ESTIMATED PARAMETERS:
-  P_PhS     = 2.2427 mg/L/h
-  k_PhS     = 176.87
-  theta_PhS     = 1.0699
-  k_R     = 4.9344 mg/L/h
-  theta_R     = 0.9996 mg/L/h
-  k_aer    = 1.3498
+  P_PhS     = 1.0505 mg/L/h
+  k_PhS     = 458.15
+  theta_PhS     = 1.0362
+  k_R     = 0.4998 mg/L/h
+  theta_R     = 1.0287 mg/L/h
+  k_aer    = 0.0818
 
 OPTIMIZATION INFO:
   Method         = particleswarm
-  Time           = 5764.6 sec
-  Swarm size     = 30
-  Max iterations = 30
-  RSS (PSO)      = 2812.7837
+  Time           = 35457.9 sec
+  Swarm size     = 100
+  Max iterations = 100
+  RSS (PSO)      = 7438.2920
+
+ INVESTIGATED PARAMETER RANGE:
+  Lower bounds   = 1.000000e-02
+  Lower bounds   = 
+  Lower bounds   = 9.900000e-01
+  Lower bounds   = 1.000000e-02
+  Lower bounds   = 9.900000e-01
+  Lower bounds   = 1.000000e-02
+  Upper bounds   = Ǵ
+  Upper bounds   = 1.200000e+00
+  Upper bounds   = 
+  Upper bounds   = 1.200000e+00
+  Upper bounds   = 
 
 MODEL DIAGNOSTICS:
-  RSS            = 28119.948 mg^2/L^2
-  RMSE           = 1.638 mg/L
-  Mean bias      = 0.057 mg/L
-  Correlation    = 0.592
-  AIC            = 10355.8575
-  N observations = 10481 (full), 1049 (optimization)
+  RSS            = 22506.668 mg^2/L^2
+  RMSE           = 1.465 mg/L
+  Mean bias      = 0.005 mg/L
+  Correlation    = 0.692
+  NSE            = 0.478 mg/L
+  AIC            = 8022.0785
+  N observations = 10481 (full), 3494 (optimization)

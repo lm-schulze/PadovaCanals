@@ -2,12 +2,12 @@ clear all
 close all
 
 %% load the table from WaterQualityDataWithRain.csv
-dataHourly = readtable('WaterQualityDataWithRain.csv');
+dataHourly = readtable('data/WaterQualityDataWithRain.csv');
 % take mean of GlobalSolarRadiationCampodarsego and GlobalSolarRadiationLegnaro
 dataHourly.meanSolarRadiation = mean([dataHourly.mean_GlobalSolarRadiationCampodarsego, ...
     dataHourly.mean_GlobalSolarRadiationLegnaro], 2);
 
-% to start the fitting for the output
+% to start the fitting for the outputy
 % let's drop all rows where AvgDissolvedOxygenOutput is NaN
 dataVarsOut = {'AvgDissolvedOxygenOutput', 'AvgWaterTemperatureOutput', 'meanSolarRadiation'};
 dataOut = rmmissing(dataHourly, 'MinNumMissing', 1, 'DataVariables', {'AvgDissolvedOxygenOutput', 'AvgWaterTemperatureOutput', 'meanSolarRadiation'});
@@ -35,24 +35,24 @@ DO_sat_fun = @DOsat_Weiss1970;
 lb_TI = [
     0.01       % Pmax ≥ 0
     1       % k_PhS > 0
-    0.95    % theta_PhS 
+    0.99    % theta_PhS 
     0.01       % k_R ≥ 0
-    0.95    % theta_R
+    0.99    % theta_R
     0.01       % k_aer ≥ 0
 ];
 
 ub_TI = [
-    50       % Pmax 
+    5       % Pmax 
     500    % k_PhS
-    1.5     % theta_PhS
+    1.2     % theta_PhS
     5       % k_R
-    1.5     % theta_R
-    5       % k_aer 
+    1.2     % theta_R
+    1       % k_aer 
 ];
 
 %% let's to subsampling for global search
 % Very aggressive subsampling for global search
-idx_sub = 1:10:length(t_DO);
+idx_sub = 1:3:length(t_DO);
 t_DO_sub = t_DO(idx_sub);
 DO_obs_sub = DO_obs(idx_sub);
 
@@ -62,10 +62,10 @@ fprintf('Dataset: %d points (using %d for optimization)\n\n', length(t_DO), leng
 
 pso_opts = optimoptions('particleswarm', ...
     'Display', 'iter', ...
-    'SwarmSize', 30, ...
-    'MaxIterations', 30, ...
+    'SwarmSize', 100, ...
+    'MaxIterations', 100, ...
     'FunctionTolerance', 1e-4, ...
-    'MaxStallIterations', 10);
+    'MaxStallIterations', 20);
 
 % set function up with the given data to pass to particleswarm
 % to estimate the parameters detailed in p
@@ -101,11 +101,15 @@ N = numel(DO_obs);
 %% some stats
 residuals = DO_sim - DO_obs;
 resnorm = sum(residuals.^2);
+mean_DO_obs = mean(DO_obs);
+SS_tot = sum((DO_obs - mean_DO_obs).^2);  % Total sum of squares
+NSE = 1 - (resnorm / SS_tot);
 
 fprintf('DO simulation diagnostics:\n');
 fprintf('--------------------------\n');
 fprintf('RSS          = %.3f mg^2/L^2\n', resnorm);
 fprintf('RMSE DO      = %.3f mg/L\n', sqrt(mean(residuals.^2)));
+fprintf('Nash-Sutcliffe Efficiency (NSE) = %.4f\n', NSE);
 fprintf('Mean bias DO = %.3f mg/L\n', mean(residuals));
 fprintf('Correlation  = %.3f\n', corr(DO_sim, DO_obs));
 
@@ -172,6 +176,7 @@ results.optimization.final_RSS = fval_pso_TI;
 % Model diagnostics
 results.diagnostics.RSS = resnorm;
 results.diagnostics.RMSE = sqrt(mean(residuals.^2));
+results.diagnostics.NSE = NSE;
 results.diagnostics.mean_bias = mean(residuals);
 results.diagnostics.correlation = corr(DO_sim, DO_obs);
 results.diagnostics.AIC = AIC;
@@ -217,11 +222,16 @@ fprintf(fid, '  Swarm size     = %d\n', results.optimization.swarm_size);
 fprintf(fid, '  Max iterations = %d\n', results.optimization.max_iterations);
 fprintf(fid, '  RSS (PSO)      = %.4f\n', results.optimization.final_RSS);
 
+fprintf(fid, '\n INVESTIGATED PARAMETER RANGE:\n');
+fprintf(fid, '  Lower bounds   = %s\n', results.bounds.lower);
+fprintf(fid, '  Upper bounds   = %s\n', results.bounds.upper);
+
 fprintf(fid, '\nMODEL DIAGNOSTICS:\n');
 fprintf(fid, '  RSS            = %.3f mg^2/L^2\n', results.diagnostics.RSS);
 fprintf(fid, '  RMSE           = %.3f mg/L\n', results.diagnostics.RMSE);
 fprintf(fid, '  Mean bias      = %.3f mg/L\n', results.diagnostics.mean_bias);
 fprintf(fid, '  Correlation    = %.3f\n', results.diagnostics.correlation);
+fprintf(fid, '  NSE            = %.3f mg/L\n', results.diagnostics.NSE);
 fprintf(fid, '  AIC            = %.4f\n', results.diagnostics.AIC);
 fprintf(fid, '  N observations = %d (full), %d (optimization)\n', ...
     results.diagnostics.n_observations, results.diagnostics.n_observations_optimization);

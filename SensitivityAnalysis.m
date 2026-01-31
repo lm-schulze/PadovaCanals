@@ -2,7 +2,7 @@ clear all
 close all
 
 %% load the table from WaterQualityDataWithRain.csv
-dataHourly = readtable('WaterQualityDataWithRain.csv');
+dataHourly = readtable('data/WaterQualityDataWithRain.csv');
 % take mean of GlobalSolarRadiationCampodarsego and GlobalSolarRadiationLegnaro
 dataHourly.meanSolarRadiation = mean([dataHourly.mean_GlobalSolarRadiationCampodarsego, ...
     dataHourly.mean_GlobalSolarRadiationLegnaro], 2);
