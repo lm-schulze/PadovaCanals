@@ -121,7 +121,7 @@ ylabel('Dissolved Oxygen (mg/L)');
 legend('Observed DO', 'Simulated DO', 'Location', 'best');
 title('I-only model: Observed vs Simulated Dissolved Oxygen');
 grid on;
-saveas(gcf, 'figures/DO_I_PSO10_vs_Obs_timeseries.png');
+saveas(gcf, 'figures/DO_I_PSO_vs_Obs_timeseries.png');
 
 
 %% plot simulated vs observed DO
@@ -137,7 +137,7 @@ ylabel('Simulated DO (mg/L)');
 title('I-only model: Simulated vs Observed DO');
 axis equal;
 grid on;
-saveas(gcf, 'figures/DO_I_PSO10_vs_Obs.png');
+saveas(gcf, 'figures/DO_I_PSO_vs_Obs.png');
 
 %% AIC evaluation
 % compute AIC of lsqnonlin-optimised model
